@@ -1,63 +1,97 @@
 import React from "react";
-import { Paper, Grid, Typography, Box, Rating } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  Typography,
+  Box,
+  Rating,
+  createTheme,
+  ThemeProvider,
+} from "@mui/material";
 import { AccessTime } from "@mui/icons-material";
 
-const TourCard = () => {
+const theme = createTheme({
+  components: {
+    MuiTypography: {
+      variants: [
+        {
+          props: {
+            variant: "body2",
+          },
+          style: {
+            fontSize: 11,
+          },
+        },
+        {
+          props: {
+            variant: "body3",
+          },
+          style: {
+            fontSize: 9,
+          },
+        },
+      ],
+    },
+  },
+});
+
+const TourCard = (props) => {
+  const { tour } = props;
+  console.log("Que esta llegando a los props", tour);
+
   return (
     <Grid item xs={3}>
-      <Paper elevation={3}>
-        <img
-          src="https://picsum.photos/seed/picsum/200/300"
-          alt=""
-          className="img"
-        />
-        <Box paddingX={1}>
-          <Typography variant="subtitle1" component="h2">
-            Titulo del tour
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <AccessTime
+      <ThemeProvider theme={theme}>
+        <Paper elevation={3}>
+          <img src={tour.image} alt={tour.name} className="img" />
+          <Box paddingX={1}>
+            <Typography variant="subtitle1" component="h2">
+              {tour.name}
+            </Typography>
+            <Box
               sx={{
-                width: 12.5,
+                display: "flex",
+                alignItems: "center",
               }}
-            />
-            <Typography variant="body2" component="p" marginLeft={0.5}>
-              5 Hours
-            </Typography>
+            >
+              <AccessTime
+                sx={{
+                  width: 12.5,
+                }}
+              />
+              <Typography variant="body2" component="p" marginLeft={0.5}>
+                {tour.duration}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+              }}
+              marginTop={3}
+            >
+              <Rating
+                name="read-only"
+                value={tour.rating}
+                precision={0.5}
+                readOnly
+                size="small"
+              />
+              <Typography variant="body2" component="p" marginLeft={0.5}>
+                {tour.rating}
+              </Typography>
+              <Typography variant="body2" component="p" marginLeft={0.5}>
+                ({tour.numberOfReviews} reviews)
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="h6" component="h3" marginTop={0}>
+                From C {tour.price}$
+              </Typography>
+            </Box>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-            marginTop={3}
-          >
-            <Rating
-              name="read-only"
-              value={4.5}
-              precision={0.5}
-              readOnly
-              size="small"
-            />
-            <Typography variant="body2" component="p" marginLeft={0.5}>
-              4.5
-            </Typography>
-            <Typography variant="body2" component="p" marginLeft={0.5}>
-              (455 reviews)
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="h6" component="h3" marginTop={0}>
-              From C 455$
-            </Typography>
-          </Box>
-        </Box>
-      </Paper>
+        </Paper>
+      </ThemeProvider>
     </Grid>
   );
 };
